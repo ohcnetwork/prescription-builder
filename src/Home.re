@@ -1,5 +1,6 @@
 let str = React.string;
-
+let medicines = [%bs.raw {|require("./assets/medicines.json")|}];
+let dosages = [|"od", "hs", "bd", "tid", "qid", "q4h", "qod", "qwk", "sos"|];
 type state = {
   prescriptions: array(Prescription.t),
   dirty: bool,
@@ -13,7 +14,10 @@ let findAndReplace = (index, f, array) => {
 };
 
 type action =
-  | UpdateMedicine(string, int);
+  | UpdateMedicine(string, int)
+  | UpdateDosage(string, int)
+  | UpdateDays(int, int)
+  | AddPescription;
 
 let reducer = (state, action) =>
   switch (action) {
@@ -23,27 +27,48 @@ let reducer = (state, action) =>
         state.prescriptions
         |> findAndReplace(index, Prescription.updateMedicine(medicine)),
     }
+  | UpdateDosage(dosage, index) => {
+      ...state,
+      prescriptions:
+        state.prescriptions
+        |> findAndReplace(index, Prescription.updateDosage(dosage)),
+    }
+  | UpdateDays(days, index) => {
+      ...state,
+      prescriptions:
+        state.prescriptions
+        |> findAndReplace(index, Prescription.updateDays(days)),
+    }
+  | AddPescription => {
+      ...state,
+      prescriptions:
+        state.prescriptions |> Js.Array.concat([|Prescription.empty()|]),
+    }
   };
 
 let showPrescriptionForm = (item, index, send) => {
   <div className="flex justify-between" key={index |> string_of_int}>
     <div className="m-1 rounded-md shadow-sm w-4/6">
-      <MedicinePicker
-        id="1"
+      <Picker
+        id={"medicine" ++ (index |> string_of_int)}
         value={item |> Prescription.medicine}
-        updateMedicineCB={medicine => send(UpdateMedicine(medicine, index))}
+        updateCB={medicine => send(UpdateMedicine(medicine, index))}
+        placeholder="Select a Medicine"
+        selectables=medicines
       />
     </div>
     <div className="m-1 rounded-md shadow-sm w-1/6">
-      <input
-        id="Dosage"
-        className="appearance-none h-10 mt-1 block w-full border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600"
+      <Picker
+        id={"dosage" ++ (index |> string_of_int)}
+        value={item |> Prescription.dosage}
+        updateCB={dosage => send(UpdateDosage(dosage, index))}
         placeholder="Dosage"
+        selectables=dosages
       />
     </div>
     <div className="m-1 rounded-md shadow-sm w-1/6">
       <input
-        id="Days"
+        id={"days" ++ (index |> string_of_int)}
         className="appearance-none h-10 mt-1 block w-full border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600"
         placeholder="Days"
       />
@@ -90,5 +115,12 @@ let make = () => {
     {state.prescriptions
      |> Array.mapi((index, item) => showPrescriptionForm(item, index, send))
      |> React.array}
+    <div className="m-1 rounded-md shadow-sm bg-gray-200 rounded">
+      <button
+        onClick={_ => send(AddPescription)}
+        className="block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+        {"+ Add another medicine" |> str}
+      </button>
+    </div>
   </div>;
 };
