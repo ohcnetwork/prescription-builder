@@ -15,7 +15,7 @@
     }
   ],
   "suffix": ".bs.js",
-  "bs-dependencies": ["reason-react", "bs-webapi"],
+  "bs-dependencies": ["reason-react", "@glennsl/bs-json", "bs-webapi"],
   "refmt": 3,
   "warnings": {
     "error": "+8"

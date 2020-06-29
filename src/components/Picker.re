@@ -30,6 +30,7 @@ let renderSelectables = (selections, updateCB) => {
   selections
   |> Array.mapi((index, selection) =>
        <button
+         type_="button"
          key={index |> string_of_int}
          onClick={_ => updateCB(selection)}
          className="w-full block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
@@ -98,6 +99,7 @@ let make = (~id, ~value, ~updateCB, ~placeholder, ~selectables) => {
       onChange={e => {updateCB(ReactEvent.Form.target(e)##value)}}
       className="appearance-none h-10 mt-1 block w-full border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600"
       placeholder
+      required={true}
     />
     {results |> Array.length == 0
        ? showDropdown

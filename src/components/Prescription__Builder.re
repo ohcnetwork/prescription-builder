@@ -70,6 +70,7 @@ let showPrescriptionForm = (item, index, send) => {
         }
         value={item |> Prescription__Prescription.days |> string_of_int}
         type_="number"
+        required={true}
       />
     </div>
     <div
@@ -118,6 +119,7 @@ let make = (~prescriptions, ~selectCB) => {
      |> React.array}
     <div className="m-1 rounded-md shadow-sm bg-gray-200 rounded">
       <button
+        type_="button"
         onClick={_ => send(AddPescription)}
         className="w-full font-bold block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
         {"+ Add medicine" |> str}
