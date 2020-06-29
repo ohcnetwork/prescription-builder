@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "bs-webapi": "^0.16.1",
-    "reason-react": ">=0.7.0"
+    "reason-react": ">=0.9.1"
   },
   "scripts": {
     "dev": "parcel index.html",
