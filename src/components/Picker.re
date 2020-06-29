@@ -1,5 +1,19 @@
 let str = React.string;
 
+open Webapi.Dom;
+
+let onWindowClick = (showDropdown, setShowDropdown, _event) =>
+  if (showDropdown) {
+    setShowDropdown(_ => false);
+  } else {
+    ();
+  };
+
+let toggleDropdown = (setShowDropdown, event) => {
+  event |> ReactEvent.Mouse.stopPropagation;
+  setShowDropdown(showDropdown => !showDropdown);
+};
+
 let search = (searchString, selectables) =>
   (
     selectables
@@ -12,6 +26,18 @@ let search = (searchString, selectables) =>
   )
   ->Belt.SortArray.stableSortBy((x, y) => String.compare(x, y));
 
+let renderSelectables = (selections, updateCB) => {
+  selections
+  |> Array.mapi((index, selection) =>
+       <button
+         key={index |> string_of_int}
+         onClick={_ => updateCB(selection)}
+         className="block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+         {selection |> str}
+       </button>
+     );
+};
+
 let searchResult = (searchInput, updateCB, selectables) => {
   // Remove all excess space characters from the user input.
   let normalizedString = {
@@ -22,45 +48,64 @@ let searchResult = (searchInput, updateCB, selectables) => {
          " ",
        );
   };
-
   switch (normalizedString) {
   | "" => [||]
   | searchString =>
     let matchingSelections = search(searchString, selectables);
-
-    matchingSelections
-    |> Array.mapi((index, selection) =>
-         <button
-           key={index |> string_of_int}
-           onClick={_ => updateCB(selection)}
-           className="block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
-           {selection |> str}
-         </button>
-       );
+    renderSelectables(matchingSelections, updateCB);
   };
+};
+
+let renderDropdown = results => {
+  <div
+    className="origin-top-left absolute z-40 left-0 mt-2 w-full rounded-md shadow-lg ">
+    <div className="rounded-md bg-white shadow-xs">
+      <div className="py-1 max-height-dropdown">
+        {results |> React.array}
+      </div>
+    </div>
+  </div>;
 };
 
 [@react.component]
 let make = (~id, ~value, ~updateCB, ~placeholder, ~selectables) => {
   let results = searchResult(value, updateCB, selectables);
+  let (showDropdown, setShowDropdown) = React.useState(_ => false);
+  React.useEffect1(
+    () => {
+      let curriedFunction = onWindowClick(showDropdown, setShowDropdown);
+
+      let removeEventListener = () =>
+        Window.removeEventListener("click", curriedFunction, window);
+
+      if (showDropdown) {
+        Window.addEventListener("click", curriedFunction, window);
+        Some(removeEventListener);
+      } else {
+        removeEventListener();
+        None;
+      };
+    },
+    [|showDropdown|],
+  );
+
   <div className="relative inline-block text-left w-full">
     <input
       id
       value
       autoComplete="false"
-      onChange={e => updateCB(ReactEvent.Form.target(e)##value)}
+      onClick={_ => setShowDropdown(_ => !showDropdown)}
+      onChange={e => {
+        setShowDropdown(_ => false);
+        updateCB(ReactEvent.Form.target(e)##value);
+      }}
       className="appearance-none h-10 mt-1 block w-full border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600"
       placeholder
     />
     {results |> Array.length == 0
-       ? React.null
-       : <div
-           className="origin-top-left absolute z-40 left-0 mt-2 w-full rounded-md shadow-lg ">
-           <div className="rounded-md bg-white shadow-xs">
-             <div className="py-1 max-height-dropdown">
-               {results |> React.array}
-             </div>
-           </div>
-         </div>}
+       ? showDropdown
+           ? renderDropdown(renderSelectables(selectables, updateCB))
+           : React.null
+       : renderDropdown(results)}
   </div>;
 };

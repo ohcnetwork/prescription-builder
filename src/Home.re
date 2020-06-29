@@ -17,6 +17,7 @@ type action =
   | UpdateMedicine(string, int)
   | UpdateDosage(string, int)
   | UpdateDays(int, int)
+  | DeletePescription(int)
   | AddPescription;
 
 let reducer = (state, action) =>
@@ -44,10 +45,16 @@ let reducer = (state, action) =>
       prescriptions:
         state.prescriptions |> Js.Array.concat([|Prescription.empty()|]),
     }
+  | DeletePescription(index) => {
+      ...state,
+      prescriptions:
+        state.prescriptions |> Js.Array.filteri((_, i) => i != index),
+    }
   };
 
 let showPrescriptionForm = (item, index, send) => {
-  <div className="flex justify-between" key={index |> string_of_int}>
+  <div
+    className="flex justify-between items-center" key={index |> string_of_int}>
     <div className="m-1 rounded-md shadow-sm w-4/6">
       <Picker
         id={"medicine" ++ (index |> string_of_int)}
@@ -73,13 +80,15 @@ let showPrescriptionForm = (item, index, send) => {
         placeholder="Days"
       />
     </div>
+    <div
+      onClick={_ => send(DeletePescription(index))}
+      className="appearance-none h-10 mt-1 block border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600 text-gray-600 font-bold">
+      {"x" |> str}
+    </div>
   </div>;
 };
 
-let initalState = () => {
-  prescriptions: [|Prescription.empty()|],
-  dirty: false,
-};
+let initalState = () => {prescriptions: [||], dirty: false};
 
 [@react.component]
 let make = () => {
@@ -118,8 +127,8 @@ let make = () => {
     <div className="m-1 rounded-md shadow-sm bg-gray-200 rounded">
       <button
         onClick={_ => send(AddPescription)}
-        className="block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
-        {"+ Add another medicine" |> str}
+        className="w-full font-bold block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+        {"+ Add medicine" |> str}
       </button>
     </div>
   </div>;
