@@ -16,7 +16,7 @@
   ],
   "homepage": "https://github.com/coronasafe/prescription-builder",
   "license": "MIT",
-  "main": "components/Builder.re",
+  "main": "components/Prescription__Builder.re",
   "publishConfig": {
     "access": "public"
   },
