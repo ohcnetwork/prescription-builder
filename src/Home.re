@@ -38,7 +38,7 @@ let reducer = (state, action) =>
       ...state,
       prescriptions:
         state.prescriptions
-        |> findAndReplace(index, Prescription.updateDays(days)),
+        |> findAndReplace(index, Prescription.updateDays(days |> abs)),
     }
   | AddPescription => {
       ...state,
@@ -78,6 +78,11 @@ let showPrescriptionForm = (item, index, send) => {
         id={"days" ++ (index |> string_of_int)}
         className="appearance-none h-10 mt-1 block w-full border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600"
         placeholder="Days"
+        onChange={e =>
+          send(UpdateDays(ReactEvent.Form.target(e)##value, index))
+        }
+        value={item |> Prescription.days |> string_of_int}
+        type_="number"
       />
     </div>
     <div

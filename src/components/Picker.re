@@ -32,7 +32,7 @@ let renderSelectables = (selections, updateCB) => {
        <button
          key={index |> string_of_int}
          onClick={_ => updateCB(selection)}
-         className="block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+         className="w-full block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
          {selection |> str}
        </button>
      );
