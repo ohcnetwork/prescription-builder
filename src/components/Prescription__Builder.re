@@ -43,7 +43,7 @@ let showPrescriptionForm = (item, index, send) => {
   <div
     className="flex justify-between items-center" key={index |> string_of_int}>
     <div className="m-1 rounded-md shadow-sm w-4/6">
-      <Picker
+      <Prescription__Picker
         id={"medicine" ++ (index |> string_of_int)}
         value={item |> Prescription__Prescription.medicine}
         updateCB={medicine => send(UpdateMedicine(medicine, index))}
@@ -52,7 +52,7 @@ let showPrescriptionForm = (item, index, send) => {
       />
     </div>
     <div className="m-1 rounded-md shadow-sm w-1/6">
-      <Picker
+      <Prescription__Picker
         id={"dosage" ++ (index |> string_of_int)}
         value={item |> Prescription__Prescription.dosage}
         updateCB={dosage => send(UpdateDosage(dosage, index))}
@@ -81,11 +81,9 @@ let showPrescriptionForm = (item, index, send) => {
   </div>;
 };
 
-let initalState = () => [||];
-
 [@react.component]
 let make = (~prescriptions, ~selectCB) => {
-    let send = (action) => selectCB(_=>reducer(prescriptions, action));
+    let send = (action) => reducer(prescriptions, action) |> selectCB;
   <div
     className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6 max-w-3xl mx-auto border mt-4">
     <h3 className="text-lg leading-6 font-medium text-gray-900">
