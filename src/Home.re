@@ -5,5 +5,5 @@ type prescriptions = array(Prescription.t);
 let make = () => {
   let (prescriptions, setPrescriptions) = React.useState(_ => [||]);
 
-  <Builder prescriptions={prescriptions} selectCB={setPrescriptions}/>;
+  <Prescription__Builder prescriptions={prescriptions} selectCB={setPrescriptions}/>;
 };
