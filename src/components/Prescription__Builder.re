@@ -1,7 +1,7 @@
 let str = React.string;
 let medicines = [%bs.raw {|require("../assets/medicines.json")|}];
 let dosages = [|"od", "hs", "bd", "tid", "qid", "q4h", "qod", "qwk", "sos"|];
-type prescriptions = array(Prescription.t);
+type prescriptions = array(Prescription__Prescription.t);
 
 let findAndReplace = (index, f, array) => {
   array
@@ -21,18 +21,18 @@ let reducer = (prescriptions, action) =>
   switch (action) {
   | UpdateMedicine(medicine, index) => 
         prescriptions
-        |> findAndReplace(index, Prescription.updateMedicine(medicine))
+        |> findAndReplace(index, Prescription__Prescription.updateMedicine(medicine))
     
   | UpdateDosage(dosage, index) => 
         prescriptions
-        |> findAndReplace(index, Prescription.updateDosage(dosage))
+        |> findAndReplace(index, Prescription__Prescription.updateDosage(dosage))
     
   | UpdateDays(days, index) => 
         prescriptions
-        |> findAndReplace(index, Prescription.updateDays(days |> abs))
+        |> findAndReplace(index, Prescription__Prescription.updateDays(days |> abs))
     
   | AddPescription => 
-        prescriptions |> Js.Array.concat([|Prescription.empty()|])
+        prescriptions |> Js.Array.concat([|Prescription__Prescription.empty()|])
     
   | DeletePescription(index) => 
         prescriptions |> Js.Array.filteri((_, i) => i != index)
@@ -45,7 +45,7 @@ let showPrescriptionForm = (item, index, send) => {
     <div className="m-1 rounded-md shadow-sm w-4/6">
       <Picker
         id={"medicine" ++ (index |> string_of_int)}
-        value={item |> Prescription.medicine}
+        value={item |> Prescription__Prescription.medicine}
         updateCB={medicine => send(UpdateMedicine(medicine, index))}
         placeholder="Select a Medicine"
         selectables=medicines
@@ -54,7 +54,7 @@ let showPrescriptionForm = (item, index, send) => {
     <div className="m-1 rounded-md shadow-sm w-1/6">
       <Picker
         id={"dosage" ++ (index |> string_of_int)}
-        value={item |> Prescription.dosage}
+        value={item |> Prescription__Prescription.dosage}
         updateCB={dosage => send(UpdateDosage(dosage, index))}
         placeholder="Dosage"
         selectables=dosages
@@ -68,7 +68,7 @@ let showPrescriptionForm = (item, index, send) => {
         onChange={e =>
           send(UpdateDays(ReactEvent.Form.target(e)##value, index))
         }
-        value={item |> Prescription.days |> string_of_int}
+        value={item |> Prescription__Prescription.days |> string_of_int}
         type_="number"
       />
     </div>

@@ -1,5 +1,4 @@
 let str = React.string;
-type prescriptions = array(Prescription.t);
 
 [@react.component]
 let make = () => {
