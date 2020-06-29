@@ -1,7 +1,29 @@
 {
-  "name": "tailwind-starter",
+  "name": "prescription-builder",
   "version": "0.1.0",
+  "description": "Tailwind styled Reason React prescription builder component",
+  "keywords": [
+    "Reason",
+    "React",
+    "Search",
+    "Tailwind",
+    "UI",
+    "CoronaSafe"
+  ],
+  "contributors": [
+    "Bodhish Thomas <bodhish@gmail.com>",
+    "Gigin Chandy George <mail.gigin@gmail.com>"
+  ],
+  "homepage": "https://github.com/coronasafe/prescription-builder",
   "license": "MIT",
+  "main": "components/Builder.re",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coronasafe/prescription-builder"
+  },
   "devDependencies": {
     "bs-platform": "7.0.1",
     "parcel-bundler": "^1.12.4",
