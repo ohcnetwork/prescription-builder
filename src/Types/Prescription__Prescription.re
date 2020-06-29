@@ -31,3 +31,14 @@ let decode = json =>
     dosage: json |> field("dosage", string),
     days: json |> field("days", int),
   };
+
+let encode = t =>
+  Json.Encode.(
+    object_([
+      ("medicine", t.medicine |> string),
+      ("dosage", t.dosage |> string),
+      ("days", t.days |> int),
+    ])
+  );
+
+let encodeArray = prescriptions => prescriptions |> Json.Encode.(array(encode));
