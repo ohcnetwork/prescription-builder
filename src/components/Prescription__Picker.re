@@ -1,4 +1,5 @@
 let str = React.string;
+let pickerStyle = ReactDOMRe.Style.make(~maxHeight="20rem", ~overflow="auto", ());
 
 open Webapi.Dom;
 
@@ -61,7 +62,7 @@ let renderDropdown = results => {
   <div
     className="origin-top-left absolute z-40 left-0 mt-2 w-full rounded-md shadow-lg ">
     <div className="rounded-md bg-white shadow-xs">
-      <div className="py-1 max-height-dropdown">
+      <div className="py-1" style={pickerStyle}>
         {results |> React.array}
       </div>
     </div>
