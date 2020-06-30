@@ -3,3 +3,8 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.max-height-dropdown {
+    max-height: 20rem;
+    overflow: auto;
+  }
