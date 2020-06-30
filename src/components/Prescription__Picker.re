@@ -1,5 +1,4 @@
 let str = React.string;
-let pickerStyle = ReactDOMRe.Style.make(~maxHeight="20rem", ~overflow="auto", ());
 
 open Webapi.Dom;
 
@@ -62,9 +61,7 @@ let renderDropdown = results => {
   <div
     className="origin-top-left absolute z-40 left-0 mt-2 w-full rounded-md shadow-lg ">
     <div className="rounded-md bg-white shadow-xs">
-      <div className="py-1" style={pickerStyle}>
-        {results |> React.array}
-      </div>
+      <div className="py-1 max-height-dropdown"> {results |> React.array} </div>
     </div>
   </div>;
 };
@@ -100,7 +97,7 @@ let make = (~id, ~value, ~updateCB, ~placeholder, ~selectables) => {
       onChange={e => {updateCB(ReactEvent.Form.target(e)##value)}}
       className="appearance-none h-10 mt-1 block w-full border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600"
       placeholder
-      required={true}
+      required=true
     />
     {results |> Array.length == 0
        ? showDropdown

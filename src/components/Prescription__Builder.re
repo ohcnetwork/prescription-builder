@@ -1,4 +1,7 @@
+[%bs.raw {|require("./tailwind.css")|}];
+
 let str = React.string;
+
 let medicines = [%bs.raw {|require("../assets/medicines.json")|}];
 let dosages = [|"od", "hs", "bd", "tid", "qid", "q4h", "qod", "qwk", "sos"|];
 type prescriptions = array(Prescription__Prescription.t);
@@ -19,24 +22,29 @@ type action =
 
 let reducer = (prescriptions, action) =>
   switch (action) {
-  | UpdateMedicine(medicine, index) => 
-        prescriptions
-        |> findAndReplace(index, Prescription__Prescription.updateMedicine(medicine))
-    
-  | UpdateDosage(dosage, index) => 
-        prescriptions
-        |> findAndReplace(index, Prescription__Prescription.updateDosage(dosage))
-    
-  | UpdateDays(days, index) => 
-        prescriptions
-        |> findAndReplace(index, Prescription__Prescription.updateDays(days |> abs))
-    
-  | AddPescription => 
-        prescriptions |> Js.Array.concat([|Prescription__Prescription.empty()|])
-    
-  | DeletePescription(index) => 
-        prescriptions |> Js.Array.filteri((_, i) => i != index)
-    
+  | UpdateMedicine(medicine, index) =>
+    prescriptions
+    |> findAndReplace(
+         index,
+         Prescription__Prescription.updateMedicine(medicine),
+       )
+
+  | UpdateDosage(dosage, index) =>
+    prescriptions
+    |> findAndReplace(index, Prescription__Prescription.updateDosage(dosage))
+
+  | UpdateDays(days, index) =>
+    prescriptions
+    |> findAndReplace(
+         index,
+         Prescription__Prescription.updateDays(days |> abs),
+       )
+
+  | AddPescription =>
+    prescriptions |> Js.Array.concat([|Prescription__Prescription.empty()|])
+
+  | DeletePescription(index) =>
+    prescriptions |> Js.Array.filteri((_, i) => i != index)
   };
 
 let showPrescriptionForm = (item, index, send) => {
@@ -70,7 +78,7 @@ let showPrescriptionForm = (item, index, send) => {
         }
         value={item |> Prescription__Prescription.days |> string_of_int}
         type_="number"
-        required={true}
+        required=true
       />
     </div>
     <div
@@ -83,7 +91,7 @@ let showPrescriptionForm = (item, index, send) => {
 
 [@react.component]
 let make = (~prescriptions, ~selectCB) => {
-    let send = (action) => reducer(prescriptions, action) |> selectCB;
+  let send = action => reducer(prescriptions, action) |> selectCB;
   <div
     className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6 max-w-3xl mx-auto border mt-4">
     <h3 className="text-lg leading-6 font-medium text-gray-900">
