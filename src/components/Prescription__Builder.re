@@ -1,5 +1,3 @@
-[%bs.raw {|require("./tailwind.css")|}];
-
 let str = React.string;
 
 let medicines = [%bs.raw {|require("../assets/medicines.json")|}];
@@ -49,8 +47,8 @@ let reducer = (prescriptions, action) =>
 
 let showPrescriptionForm = (item, index, send) => {
   <div
-    className="flex justify-between items-center" key={index |> string_of_int}>
-    <div className="m-1 rounded-md shadow-sm w-4/6">
+    className="tw-flex tw-justify-between tw-items-center" key={index |> string_of_int}>
+    <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-w-4/6">
       <Prescription__Picker
         id={"medicine" ++ (index |> string_of_int)}
         value={item |> Prescription__Prescription.medicine}
@@ -59,7 +57,7 @@ let showPrescriptionForm = (item, index, send) => {
         selectables=medicines
       />
     </div>
-    <div className="m-1 rounded-md shadow-sm w-1/6">
+    <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-w-1/6">
       <Prescription__Picker
         id={"dosage" ++ (index |> string_of_int)}
         value={item |> Prescription__Prescription.dosage}
@@ -68,10 +66,10 @@ let showPrescriptionForm = (item, index, send) => {
         selectables=dosages
       />
     </div>
-    <div className="m-1 rounded-md shadow-sm w-1/6">
+    <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-w-1/6">
       <input
         id={"days" ++ (index |> string_of_int)}
-        className="appearance-none h-10 mt-1 block w-full border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600"
+        className="tw-appearance-none tw-h-10 tw-mt-1 tw-block tw-w-full tw-border tw-border-gray-400 tw-rounded tw-py-2 tw-px-4 tw-text-sm tw-bg-gray-100 hover:tw-bg-gray-200 focus:tw-outline-none focus:tw-bg-white focus:tw-border-gray-600"
         placeholder="Days"
         onChange={e =>
           send(UpdateDays(ReactEvent.Form.target(e)##value, index))
@@ -83,7 +81,7 @@ let showPrescriptionForm = (item, index, send) => {
     </div>
     <div
       onClick={_ => send(DeletePescription(index))}
-      className="appearance-none h-10 mt-1 block border border-gray-400 rounded py-2 px-4 text-sm bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-white focus:border-gray-600 text-gray-600 font-bold">
+      className="tw-appearance-none tw-h-10 tw-mt-1 tw-block tw-border tw-border-gray-400 tw-rounded tw-py-2 tw-px-4 tw-text-sm tw-bg-gray-100 hover:tw-bg-gray-200 focus:tw-outline-none focus:tw-bg-white focus:tw-border-gray-600 tw-text-gray-600 tw-font-bold">
       {"x" |> str}
     </div>
   </div>;
@@ -93,29 +91,29 @@ let showPrescriptionForm = (item, index, send) => {
 let make = (~prescriptions, ~selectCB) => {
   let send = action => reducer(prescriptions, action) |> selectCB;
   <div
-    className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6 max-w-3xl mx-auto border mt-4">
-    <h3 className="text-lg leading-6 font-medium text-gray-900">
+    className="tw-bg-white tw-px-4 tw-py-5 tw-border-b tw-border-gray-200 sm:tw-px-6 tw-max-w-3xl tw-mx-auto tw-border tw-mt-4">
+    <h3 className="tw-text-lg tw-leading-6 tw-font-medium tw-text-gray-900">
       {"Prescription" |> str}
     </h3>
-    <div className="flex justify-between mt-4">
-      <div className="m-1 rounded-md shadow-sm w-4/6">
+    <div className="tw-flex tw-justify-between tw-mt-4">
+      <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-w-4/6">
         <label
           htmlFor="Medicine"
-          className="block text-sm font-medium leading-5 text-gray-700">
+          className="tw-block tw-text-sm tw-font-medium tw-leading-5 tw-text-gray-700">
           {"Medicine" |> str}
         </label>
       </div>
-      <div className="m-1 rounded-md shadow-sm w-1/6">
+      <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-w-1/6">
         <label
           htmlFor="Dosage"
-          className="block text-sm font-medium leading-5 text-gray-700">
+          className="tw-block tw-text-sm tw-font-medium tw-leading-5 tw-text-gray-700">
           {"Dosage" |> str}
         </label>
       </div>
-      <div className="m-1 rounded-md shadow-sm w-1/6">
+      <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-w-1/6">
         <label
           htmlFor="Days"
-          className="block text-sm font-medium leading-5 text-gray-700">
+          className="tw-block tw-text-sm tw-font-medium tw-leading-5 tw-text-gray-700">
           {"Days" |> str}
         </label>
       </div>
@@ -123,11 +121,11 @@ let make = (~prescriptions, ~selectCB) => {
     {prescriptions
      |> Array.mapi((index, item) => showPrescriptionForm(item, index, send))
      |> React.array}
-    <div className="m-1 rounded-md shadow-sm bg-gray-200 rounded">
+    <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-bg-gray-200 tw-rounded">
       <button
         type_="button"
         onClick={_ => send(AddPescription)}
-        className="w-full font-bold block px-4 py-2 text-sm leading-5 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+        className="tw-w-full tw-font-bold tw-block tw-px-4 tw-py-2 tw-text-sm tw-leading-5 tw-text-left tw-text-gray-700 hover:tw-bg-gray-100 hover:tw-text-gray-900 focus:tw-outline-none focus:tw-bg-gray-100 focus:tw-text-gray-900">
         {"+ Add medicine" |> str}
       </button>
     </div>
