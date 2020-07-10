@@ -10,3 +10,4 @@ npm-debug.log
 *.bs.js
 *.cache
 dist/
+.idea
