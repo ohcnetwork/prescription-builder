@@ -17,6 +17,9 @@
   "suffix": ".bs.js",
   "bs-dependencies": ["reason-react", "@glennsl/bs-json", "bs-webapi"],
   "refmt": 3,
+  "gentypeconfig": {
+    "language": "typescript"
+  },
   "warnings": {
     "error": "+8"
   }

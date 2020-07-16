@@ -1,3 +1,4 @@
+[@genType]
 type t = {
   medicine: string,
   dosage: string,
