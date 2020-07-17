@@ -1,6 +1,6 @@
 {
   "name": "@coronasafe/prescription-builder",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Tailwind styled Reason React prescription builder component",
   "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "keywords": [
