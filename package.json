@@ -1,6 +1,6 @@
 {
   "name": "@coronasafe/prescription-builder",
-  "version": "0.2.00",
+  "version": "0.3.0",
   "description": "Tailwind styled Reason React prescription builder component",
   "keywords": [
     "Reason",

@@ -10,5 +10,6 @@ npm-debug.log
 *.bs.js
 *.cache
 dist/
+build/
 .idea
 .parcel-cache/
