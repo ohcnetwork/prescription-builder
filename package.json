@@ -22,12 +22,10 @@
     "url": "https://github.com/coronasafe/prescription-builder"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.3.0",
     "autoprefixer": "^10.2.6",
     "bs-platform": "8.4.2",
-    "cssnano": "^4.1.10",
     "gentype": "^3.27.0",
-    "parcel": "^2.0.0-nightly.708",
+    "parcel": "^2.0.0-beta.2",
     "postcss": "^8.3.0",
     "postcss-cli": "^8.3.1",
     "tailwindcss": "^2.1.4"
