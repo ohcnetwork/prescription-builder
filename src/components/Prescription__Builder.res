@@ -1,53 +1,37 @@
-let str = React.string;
+let str = React.string
 
-let medicines = [%bs.raw {|require("../assets/medicines.json")|}];
-let dosages = [|"od", "hs", "bd", "tid", "qid", "q4h", "qod", "qwk", "sos"|];
-type prescriptions = array(Prescription__Prescription.t);
+let medicines = %bs.raw(`require("../assets/medicines.json")`)
+let dosages = ["od", "hs", "bd", "tid", "qid", "q4h", "qod", "qwk", "sos"]
+type prescriptions = array<Prescription__Prescription.t>
 
-let findAndReplace = (index, f, array) => {
-  array
-  |> Array.mapi((i, prescription) => {
-       i == index ? f(prescription) : prescription
-     });
-};
+let findAndReplace = (index, f, array) =>
+  array |> Array.mapi((i, prescription) => i == index ? f(prescription) : prescription)
 
 type action =
   | UpdateMedicine(string, int)
   | UpdateDosage(string, int)
   | UpdateDays(int, int)
   | DeletePescription(int)
-  | AddPescription;
+  | AddPescription
 
 let reducer = (prescriptions, action) =>
-  switch (action) {
+  switch action {
   | UpdateMedicine(medicine, index) =>
-    prescriptions
-    |> findAndReplace(
-         index,
-         Prescription__Prescription.updateMedicine(medicine),
-       )
+    prescriptions |> findAndReplace(index, Prescription__Prescription.updateMedicine(medicine))
 
   | UpdateDosage(dosage, index) =>
-    prescriptions
-    |> findAndReplace(index, Prescription__Prescription.updateDosage(dosage))
+    prescriptions |> findAndReplace(index, Prescription__Prescription.updateDosage(dosage))
 
   | UpdateDays(days, index) =>
-    prescriptions
-    |> findAndReplace(
-         index,
-         Prescription__Prescription.updateDays(days |> abs),
-       )
+    prescriptions |> findAndReplace(index, Prescription__Prescription.updateDays(days |> abs))
 
-  | AddPescription =>
-    prescriptions |> Js.Array.concat([|Prescription__Prescription.empty()|])
+  | AddPescription => prescriptions |> Js.Array.concat([Prescription__Prescription.empty()])
 
-  | DeletePescription(index) =>
-    prescriptions |> Js.Array.filteri((_, i) => i != index)
-  };
+  | DeletePescription(index) => prescriptions |> Js.Array.filteri((_, i) => i != index)
+  }
 
-let showPrescriptionForm = (item, index, send) => {
-  <div
-    className="tw-flex tw-justify-between tw-items-center" key={index |> string_of_int}>
+let showPrescriptionForm = (item, index, send) =>
+  <div className="tw-flex tw-justify-between tw-items-center" key={index |> string_of_int}>
     <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-w-4/6">
       <Prescription__Picker
         id={"medicine" ++ (index |> string_of_int)}
@@ -71,9 +55,7 @@ let showPrescriptionForm = (item, index, send) => {
         id={"days" ++ (index |> string_of_int)}
         className="tw-appearance-none tw-h-10 tw-mt-1 tw-block tw-w-full tw-border tw-border-gray-400 tw-rounded tw-py-2 tw-px-4 tw-text-sm tw-bg-gray-100 hover:tw-bg-gray-200 focus:tw-outline-none focus:tw-bg-white focus:tw-border-gray-600"
         placeholder="Days"
-        onChange={e =>
-          send(UpdateDays(ReactEvent.Form.target(e)##value, index))
-        }
+        onChange={e => send(UpdateDays(ReactEvent.Form.target(e)["value"], index))}
         value={item |> Prescription__Prescription.days |> string_of_int}
         type_="number"
         required=true
@@ -84,12 +66,11 @@ let showPrescriptionForm = (item, index, send) => {
       className="tw-appearance-none tw-h-10 tw-mt-1 tw-block tw-border tw-border-gray-400 tw-rounded tw-py-2 tw-px-4 tw-text-sm tw-bg-gray-100 hover:tw-bg-gray-200 focus:tw-outline-none focus:tw-bg-white focus:tw-border-gray-600 tw-text-gray-600 tw-font-bold">
       {"x" |> str}
     </div>
-  </div>;
-};
+  </div>
 
-[@react.component]
+@react.component
 let make = (~prescriptions, ~selectCB) => {
-  let send = action => reducer(prescriptions, action) |> selectCB;
+  let send = action => reducer(prescriptions, action) |> selectCB
   <div
     className="tw-bg-white tw-px-4 tw-py-5 tw-border-b tw-border-gray-200 sm:tw-px-6 tw-max-w-3xl tw-mx-auto tw-border tw-mt-4">
     <h3 className="tw-text-lg tw-leading-6 tw-font-medium tw-text-gray-900">
@@ -119,8 +100,8 @@ let make = (~prescriptions, ~selectCB) => {
       </div>
     </div>
     {prescriptions
-     |> Array.mapi((index, item) => showPrescriptionForm(item, index, send))
-     |> React.array}
+    |> Array.mapi((index, item) => showPrescriptionForm(item, index, send))
+    |> React.array}
     <div className="tw-m-1 tw-rounded-md tw-shadow-sm tw-bg-gray-200 tw-rounded">
       <button
         type_="button"
@@ -129,5 +110,5 @@ let make = (~prescriptions, ~selectCB) => {
         {"+ Add medicine" |> str}
       </button>
     </div>
-  </div>;
-};
+  </div>
+}
