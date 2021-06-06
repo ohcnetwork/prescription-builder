@@ -2,7 +2,6 @@
   "name": "@coronasafe/prescription-builder",
   "version": "0.1.13",
   "description": "Tailwind styled Reason React prescription builder component",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "keywords": [
     "Reason",
     "React",
@@ -24,12 +23,14 @@
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.3.0",
-    "bs-platform": "8.0.3",
+    "autoprefixer": "^10.2.6",
+    "bs-platform": "8.4.2",
     "cssnano": "^4.1.10",
     "gentype": "^3.27.0",
-    "parcel-bundler": "^1.12.4",
-    "postcss-cli": "^7.1.1",
-    "tailwindcss": "^1.1.4"
+    "parcel": "^2.0.0-nightly.708",
+    "postcss": "^8.3.0",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.1.4"
   },
   "dependencies": {
     "@glennsl/bs-json": "^5.0.2",
@@ -40,12 +41,10 @@
   },
   "scripts": {
     "purge:css": "NODE_ENV=production postcss src/tailwind.css -o src/index.css",
-    "dev": "parcel index.html",
+    "dev": "bsb -make-world -clean-world && parcel index.html",
     "build": "NODE_ENV=production && parcel build index.html",
     "test": "echo \"Error: run tests from root\" && exit 1",
     "re:build": "bsb -make-world -clean-world",
-    "re:watch": "bsb -make-world -clean-world -w",
-    "github_login": "npm login --registry=https://npm.pkg.github.com/",
-    "github_publish": "npm publish"
+    "re:watch": "bsb -make-world -clean-world -w"
   }
 }

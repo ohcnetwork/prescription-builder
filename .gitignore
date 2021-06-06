@@ -11,3 +11,4 @@ npm-debug.log
 *.cache
 dist/
 .idea
+.parcel-cache/
